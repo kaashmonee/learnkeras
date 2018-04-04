@@ -1,9 +1,8 @@
 # tutorial from elitedatascience.com -- including comments for my benefit
 # https://elitedatascience.com/keras-tutorial-deep-learning-in-python
 # "augmented" with my own documentation
-
-
 import numpy as np
+from imread import imread, imsave
 from keras.models import Sequential
 from keras.layers import Dense, Dropout, Activation, Flatten
 from keras.layers import Convolution2D, MaxPooling2D
@@ -80,12 +79,24 @@ def main():
                   optimizer="adam",
                   metrics=["accuracy"])
     
-    model.fit(X_train, Y_train, batch_size=32, epochs=10, verbose=1)
+    model.fit(X_train, Y_train, batch_size=32, epochs=1, verbose=1)
 
     score = model.evaluate(X_test, Y_test, verbose = 0)
 
-    print(model.output_shape)
-    
+    test_image(model)
+
+    # print(model.output_shape)
+
+def test_image(model):
+    yes_no = True
+    while yes_no:
+        path = input("Please enter the path: ")
+        im = imread(path) 
+        im = im/255
+        pr = model.predict_classes(im.reshape((28, 28, 1, 1)))
+        print("Result: ", pr)
+        
+        yes_no = True if (input("Would you like to continue? [Y/n] ") == "y" or "Y") else False
 
 
 
