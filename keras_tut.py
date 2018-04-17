@@ -16,6 +16,7 @@ from keras.datasets import mnist
 def main():
 
     # print("minst.load_data(): ", mnist.load_data())
+    # new comment
     (X_train, y_train), (X_test, y_test) = mnist.load_data()
 
     print(X_train.shape)
@@ -80,6 +81,7 @@ def main():
                   metrics=["accuracy"])
     
     model.fit(X_train, Y_train, batch_size=32, epochs=1, verbose=1)
+    model.save("model")
 
     score = model.evaluate(X_test, Y_test, verbose = 0)
 
@@ -91,7 +93,8 @@ def test_image(model):
     yes_no = True
     while yes_no:
         path = input("Please enter the path: ")
-        im = imread(path) 
+        im = imread(path)
+        im = im.astype("float32")
         im = im/255
         pr = model.predict_classes(im.reshape((28, 28, 1, 1)))
         print("Result: ", pr)
